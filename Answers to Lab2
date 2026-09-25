@@ -1,0 +1,30 @@
+question 1: The file pyproject.toml has been updated to include the new project dependencies: MLflow, PyTorch, torchvision, and scikit-learn. The file uv.lock has also been updated to reflect the exact versions of the dependencies.
+
+question 2: --backend-store-uri has the location where MLflow persists experiment metadata like parameters, metrics, run ID, and run details. In this case, MLflow stores it in an SQLite database mlflow.db.
+
+--default-artifact-root has the location where MLflow stores the bigger files generated during runs, like the trained model itself.
+
+Metadata represents the description of the experiment, while the artifact is the file itself created during the experiment.
+
+question 3 : These are the MLflow run output files for the local MLflow runtime and do not pertain to the source code or datasets associated with the projects. The Git repository is supposed to manage the training source code and not MLflow run output files. Hence, these files should not be committed in Git or DVC.
+
+question 4: MLflow automatically creates a new experiment with that name. Therefore, calling mlflow.set_experiment("food11") for the first time creates the food11 experiment, which then appears in the MLflow UI.
+
+question 5: log_param stores constants that are set before running the model like the learning rate or batch size. log_metric stores measurements like loss and accuracy.
+The measurements may vary during training, hence the step to show when the measurement was taken. Parameters will not vary once they have been set.
+
+question 6: MLflow UI shows the run parameters, metrics, and artifact of the model logged. Artifact of the model is stored in the artifact directory associated with that particular run inside the local MLflow artifact directory ./mlruns.
+
+question 7: Learning rate 0.0001 yielded the maximum validation accuracy of 0.723 (72.3%). The larger the learning rate, the better is not always the case. For instance, learning rate 0.01 gave much smaller validation accuracy of 0.157 (15.7%).
+
+question 8:The highest validation accuracy was obtained for the combination lr = 0.0001 and batch_size = 32. If we increase the value of learning rate to 0.01, the validation accuracy is greatly reduced. For lr = 0.001, the batch_size = 64 outperformed the batch_size = 32.
+
+question 9:Calm-Rook-741 is the best run, considering that it has validation accuracy at 0.7226 (72.26%). The Run ID for this run is ab1725930a314754aa04a44076bd984f.
+
+ID:ab1725930a314754aa04a44076bd984f --> val accuracy : 0.7226277372262774
+
+ID:b9db0d19406e45d0bb102a341fa8ebce --> val accuracy: 0.6031021897810219
+
+ID:140378d247404000bd1620443e9f0436 -->val accuracy: 0.48722627737226276
+
+ID:f370e39959064b2fa7e04656ef03aceb --> val accuracy: 0.15693430656934307
