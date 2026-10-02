@@ -1,0 +1,17 @@
+Question 1: Version 1. Log artifact refers to a set of files created under one run. Registered model is a versioned entry in the registry that references an artifact and may have aliases and tags.
+
+Question 2: Champion-challenger aliases, along with tags. The reason for versioning separately is the ability to isolate the lifecycle of the model from the experiment that created it. Aliases give more freedom in the sense that they may have any names and be switched to other versions at once.
+
+Question 3: This is because URI hides the file path and format, and mlflow takes care of loading the model and its dependencies. In order to serve a new version, I just need to update the champion alias and restart the application.
+
+Question 4: The dependency changes seldom occur, hence the uv-sync layer is kept in cache. Whenever I make changes to the file serve.py, only the COPY src/ and subsequent layers get rebuilt without reinstalling dependencies.
+
+Question 5: The multi-staging image size is approximately 1.9 GB. The naive approach is approximately 3 GB. It can be seen from docker history that the copy of venv which occupies 1.75 GB is the largest among all layers and it contains PyTorch. The slim image is around 140 MB and my code size is 53 kB.
+
+Question 6: The entire folder is passed to the daemon, which causes slow builds, cache failures, and larger images when there is any usage of COPY .. .venv/ would cause issues since the virtual environment on the host has binaries specific to the platform and symlinks to the Python on the host.
+
+Question 7: A container has an isolated network system. Thus, 127.0.0.1 inside a container represents the container itself and not the machine I am using. mlflow is not available inside the container; therefore, it cannot be used for connecting. host.docker.internal is a reserved keyword in Docker Desktop that is mapped to the IP address of the host machine from within a container. This way, the container can connect to the mlflow server running on my machine.
+
+Question 8: Yes, it loads without rebuilding. The image contains only the code and dependencies and the API routes and the model is loaded from mlflow at runtime so the mlflow server needs to be accessible.
+
+Question 9: The image is available only on my computer; therefore, it will have to be pushed to some kind of registry such as Docker Hub using some unique tag (such as git commit hash rather than latest), and other machine will also need access to the model, which is not in the image.
